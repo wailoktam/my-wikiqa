@@ -39,9 +39,10 @@ if __name__ == '__main__':
     for q in question_words:
         print(q)
         print(len(result[q]))
+        result[q] = list(result[q])
     
 
     f = open('qTerms', 'wb')
-    pickle.dump(result, f)
+    pickle.dump(result, f, protocol=2)
 
 

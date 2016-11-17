@@ -4,11 +4,10 @@ sys.setdefaultencoding('utf8')
 
 import pickle
 import re
-
+import random
 import string
 import json
 from xml.etree import ElementTree as etree
-#from pympler import asizeof
 from pycorenlp import StanfordCoreNLP
 from xmljson import BadgerFish
 from collections import OrderedDict
@@ -17,30 +16,28 @@ nlp = StanfordCoreNLP('http://localhost:9000')
 
 def parse(input):
     dbg = open("debug","w")
-#    print("parse input" )
-#    print (input)
+
+
     output = nlp.annotate(input, properties={
         'annotators': 'tokenize,ssplit,pos',
         'outputFormat': 'xml',
         'timeout': 30000})
     fixed = []
     for o in output:
-#        if is_ascii(o):
         fixed.append(o)
     return("".join(fixed))
 
 
 def lparse(input):
     dbg = open("debug","w")
-#    print("parse input" )
-#    print (input)
+
+
     output = nlp.annotate(input, properties={
         'annotators': 'tokenize,ssplit,pos,lemma',
         'outputFormat': 'xml',
         'timeout': 30000})
     fixed = []
     for o in output:
-#   if is_ascii(o):
         fixed.append(o)
     return("".join(fixed))
 
@@ -61,22 +58,22 @@ if __name__ == '__main__':
     bf = BadgerFish(dict_type=OrderedDict)
 
 
-    trainFile = open("/home/ubuntu/WikiQACorpus/WikiQA-train.tsv")
+    trainFile = open("WikiQA-train.tsv")
     trainFiles = [trainFile]
 
-    testFile = open("/home/ubuntu/WikiQACorpus/WikiQA-test.tsv")
+    testFile = open("WikiQA-test.tsv")
     testFiles = [testFile]
 
-    validFile = open("/home/ubuntu/WikiQACorpus/WikiQA-dev.tsv")
+    validFile = open("WikiQA-dev.tsv")
     validFiles = [validFile]
     fileList = [trainFiles,testFiles,validFiles]
-#   rAnsFile = open("/home/ubuntu/insuranceQA/V2/InsuranceQA.label2answer.raw.encoded")
-#   rLexFile = open("/home/ubuntu/insuranceQA/V2/vocabulary")
+
+
     debugFile = open("debug","w")
 
-#    lex = pickle.load(lexFile)
+
     patIdx = re.compile(r"idx_(\d*)", re.DOTALL)
-#    mTrainSize = round(len(train)/10)
+
 
     qCount = 0
     lqCount = 0
@@ -145,7 +142,9 @@ if __name__ == '__main__':
 
 
 
-
+    qTerms = ['who', 'when', 'where', 'what', 'how']
+    q_file = open('qTerms', 'rb')
+    qTermDic = pickle.load(q_file)
 
 
     for l,fileList  in enumerate(fileList):
@@ -166,18 +165,24 @@ if __name__ == '__main__':
                 line = str.strip(line)
                 fields = line.split("\t")
 
-                questionRaw = fields[1]
-                answerRaw = fields[5]
+                questionRaw = fields[1].lower()
+
+#                if questionRaw.split()[0] in qTerms:
+#                    tempQTerm = questionRaw.split()[0]
+#                    randomTerm = random.choice(qTermDic[tempQTerm])
+#                    questionRaw = questionRaw.replace(tempQTerm, randomTerm)
+
+                answerRaw = fields[5].lower()
 #                print "questionRaw"
 #                print questionRaw
-                parseQXML = etree.fromstring(parse(questionRaw))
-                lparseQXML =  etree.fromstring(lparse(questionRaw))
+                parseQXML = etree.fromstring(lparse(str(questionRaw)))
+#                lparseQXML =  etree.fromstring(lparse(questionRaw))
                 qTokens = parseQXML.findall(".//token")
-                lqTokens = lparseQXML.findall(".//token")
-                parseAXML = etree.fromstring(parse(answerRaw))
-                lparseAXML = etree.fromstring(lparse(answerRaw))
+#                lqTokens = lparseQXML.findall(".//token")
+                parseAXML = etree.fromstring(lparse(str(answerRaw)))
+#                lparseAXML = etree.fromstring(lparse(answerRaw))
                 aTokens = parseAXML.findall(".//token")
-                laTokens = lparseAXML.findall(".//token")
+#                laTokens = lparseAXML.findall(".//token")
 #                print ("q tokens")
 #                print tokens
                 outQIdx = []
@@ -199,7 +204,7 @@ if __name__ == '__main__':
 #                        qWord = token.find(".//word").text
 #                        print "["+qWord+"]"
 #                    lemma = token.find(".//lemma").text
-                    word = token.find(".//word").text
+                    word = token.find(".//lemma").text
                     qWordList.append(word)
                     if word not in revWordDict.keys():
                         wordKey += 1
@@ -214,23 +219,23 @@ if __name__ == '__main__':
 #                print qLemma
 
 
-                for t, token in enumerate(lqTokens):
+#                for t, token in enumerate(lqTokens):
 #                    if t == 0:
 #                        qLemma = token.find(".//lemma").text
-                    lemma = token.find(".//lemma").text
-                    qLemmaList.append(lemma)
-                    if lemma not in revLemmaDict.keys():
-                        lemmaKey += 1
-                        lemmaDict[lemmaKey] = lemma
-                        revLemmaDict[lemma] = lemmaKey
-                        outlqIdx.append(lemmaKey)
-                    else:
-                        existLKey = revLemmaDict[lemma]
-                        outlqIdx.append(existLKey)
-                qLemmaSent = " ".join(qLemmaList)
+#                    lemma = token.find(".//lemma").text
+#                    qLemmaList.append(lemma)
+#                    if lemma not in revLemmaDict.keys():
+#                        lemmaKey += 1
+#                        lemmaDict[lemmaKey] = lemma
+#                        revLemmaDict[lemma] = lemmaKey
+#                        outlqIdx.append(lemmaKey)
+#                    else:
+#                        existLKey = revLemmaDict[lemma]
+#                        outlqIdx.append(existLKey)
+#                qLemmaSent = " ".join(qLemmaList)
 
                 for t, token in enumerate(aTokens):
-                    word = token.find(".//word").text
+                    word = token.find(".//lemma").text
                     aWordList.append(word)
                     if word not in revWordDict.keys():
                         wordKey += 1
@@ -244,18 +249,18 @@ if __name__ == '__main__':
 
 
 
-                for t, token in enumerate(laTokens):
-                    lemma = token.find(".//lemma").text
-                    aLemmaList.append(lemma)
-                    if lemma not in revLemmaDict.keys():
-                        lemmaKey += 1
-                        lemmaDict[lemmaKey] = lemma
-                        revLemmaDict[lemma] = lemmaKey
-                        outlaIdx.append(lemmaKey)
-                    else:
-                        existLKey = revLemmaDict[lemma]
-                        outlaIdx.append(existLKey)
-                aLemmaSent = " ".join(aLemmaList)
+#                for t, token in enumerate(laTokens):
+#                    lemma = token.find(".//lemma").text
+#                    aLemmaList.append(lemma)
+#                    if lemma not in revLemmaDict.keys():
+#                        lemmaKey += 1
+#                        lemmaDict[lemmaKey] = lemma
+#                        revLemmaDict[lemma] = lemmaKey
+#                        outlaIdx.append(lemmaKey)
+#                    else:
+#                        existLKey = revLemmaDict[lemma]
+#                        outlaIdx.append(existLKey)
+#                aLemmaSent = " ".join(aLemmaList)
 
 
 
@@ -273,11 +278,11 @@ if __name__ == '__main__':
                     revQDict[qWordSent] = qCount
                     qIdxPair[qCount] = outQIdx
 
-                if qLemmaSent not in revlqDict.keys():
-                    lqCount += 1
-                    lqDict[lqCount] = qLemmaSent
-                    revlqDict[qLemmaSent] = lqCount
-                    lqIdxPair[qCount] = outlqIdx
+#                if qLemmaSent not in revlqDict.keys():
+#                    lqCount += 1
+#                    lqDict[lqCount] = qLemmaSent
+#                    revlqDict[qLemmaSent] = lqCount
+#                    lqIdxPair[qCount] = outlqIdx
 
                 if aWordSent not in revADict.keys():
                     aCount += 1
@@ -286,12 +291,12 @@ if __name__ == '__main__':
                     ansIdxPair[aCount] = outAIdx
 
 
-                if aLemmaSent not in revlaDict.keys():
-                    laCount += 1
-                    laDict[laCount] = aLemmaSent
+#                if aLemmaSent not in revlaDict.keys():
+#                    laCount += 1
+#                    laDict[laCount] = aLemmaSent
 
-                    revlaDict[aLemmaSent] = laCount
-                    lansIdxPair[aCount] = outlaIdx
+#                    revlaDict[aLemmaSent] = laCount
+#                    lansIdxPair[aCount] = outlaIdx
 
 
 
@@ -309,46 +314,52 @@ if __name__ == '__main__':
 #                        print ("trainList")
 #                        print (trainList)
                         if any(train):
-                            train["answer_pool"] = poolList
-                            train["answer_id"] = correctList
-                            trainList.append(train)
+                            train["bad"] = poolList
+                            train["good"] = correctList
+                            if correctList != [] : trainList.append(train)
                             train = {}
-                        correctList = []
-                        train["question_id"] = qCount
-                        poolList = [revADict[aWordSent]]
 
+                        correctList = []
+                        poolList = []
+                        train['question'] = outQIdx
+                        train["question_id"] = qCount
+                    
                         if fields[6]  == "1":
                             correctList.append(revADict[aWordSent])
+                        else:
+                            poolList = [revADict[aWordSent]]
 
 
                     else:
-                        poolList.append(revADict[aWordSent])
+                        
                         if fields[6] == "1":
 #                            print ("fields6 hit")
                             correctList.append(revADict[aWordSent])
+                        else:
+                            poolList.append(revADict[aWordSent])
 
-                    if not fields[0] == oldLqId:
+#                    if not fields[0] == oldLqId:
 
-                        if any(lTrain):
-                            lTrain["answer_pool"] = poolListL
-                            lTrain["answer_id"] = correctListL
-                            lTrainList.append(lTrain)
-                            lTrain = {}
-                        correctListL = []
-                        lTrain["question_id"] = lqCount
-                        poolListL = [revlaDict[aLemmaSent]]
+#                        if any(lTrain):
+#                            lTrain["answer_pool"] = poolListL
+#                            lTrain["answer_id"] = correctListL
+#                            lTrainList.append(lTrain)
+#                            lTrain = {}
+#                        correctListL = []
+#                        lTrain["question_id"] = lqCount
+#                        poolListL = [revlaDict[aLemmaSent]]
 
-                        if fields[6] == "1":
-                            correctListL.append(revlaDict[aLemmaSent])
+#                        if fields[6] == "1":
+#                            correctListL.append(revlaDict[aLemmaSent])
 
 
-                    else:
-                        poolListL.append(revlaDict[aLemmaSent])
-                        if fields[6] == "1":
-                            correctListL.append(revlaDict[aLemmaSent])
+#                    else:
+#                        poolListL.append(revlaDict[aLemmaSent])
+#                        if fields[6] == "1":
+#                            correctListL.append(revlaDict[aLemmaSent])
 
                     oldQId = fields[0]
-                    oldLqId = fields[0]
+#                    oldLqId = fields[0]
 
 
                 elif l == 1:
@@ -380,41 +391,44 @@ if __name__ == '__main__':
 
                     if not fields[0] == oldQId:
                         if any(test):
-                            test["answer_pool"] = poolList
-                            test["answer_id"] = correctList
-                            testList.append(test)
-                            print ("test")
-                            print (test)
+                            test["bad"] = poolList
+                            test["good"] = correctList
+                            if correctList != [] : testList.append(test)
                             test = {}
                         test["question_id"] = qCount
-                        poolList = [revADict[aWordSent]]
+                        test['question'] = outQIdx
+                        poolList = []
                         correctList = []
                         if fields[6] == "1":
                             correctList.append(revADict[aWordSent])
+                        else:
+                            poolList = [revADict[aWordSent]]
                     else:
-                        poolList.append(revADict[aWordSent])
+                        
                         if fields[6] == "1":
                             correctList.append(revADict[aWordSent])
+                        else:
+                            poolList.append(revADict[aWordSent])
 
-                    if not fields[0] == oldLqId:
-                        if any(lTest):
-                            lTest["answer_pool"] = poolListL
-                            lTest["answer_id"] = correctListL
-                            lTestList.append(lTest)
-                            lTest = {}
-                        correctListL = []
-                        lTest["question_id"] = lqCount
-                        poolListL = [revlaDict[aLemmaSent]]
-                        if fields[6] == "1":
-                            correctListL.append(revlaDict[aLemmaSent])
+#                    if not fields[0] == oldLqId:
+#                        if any(lTest):
+#                            lTest["answer_pool"] = poolListL
+#                            lTest["answer_id"] = correctListL
+#                            lTestList.append(lTest)
+#                            lTest = {}
+#                        correctListL = []
+#                        lTest["question_id"] = lqCount
+#                        poolListL = [revlaDict[aLemmaSent]]
+#                        if fields[6] == "1":
+#                            correctListL.append(revlaDict[aLemmaSent])
 
 
-                    else:
-                        poolListL.append(revlaDict[aLemmaSent])
-                        if fields[6] == "1":
-                            correctListL.append(revlaDict[aLemmaSent])
+#                    else:
+#                        poolListL.append(revlaDict[aLemmaSent])
+#                        if fields[6] == "1":
+#                            correctListL.append(revlaDict[aLemmaSent])
                     oldQId = fields[0]
-                    oldLqId = fields[0]
+#                    oldLqId = fields[0]
 
                 elif l == 2:
 #                    if startNewFile == 1:
@@ -440,79 +454,91 @@ if __name__ == '__main__':
                     if not fields[0] == oldQId:
 
                         if any(dev):
-                            dev["answer_pool"] = poolList
-                            dev["answer_id"] = correctList
-                            validList.append(dev)
+                            dev["bad"] = poolList
+                            dev["good"] = correctList
+                            if correctList != [] : validList.append(dev)
                             dev = {}
                         correctList = []
+                        poolList = []
                         dev["question_id"] = qCount
-                        poolList = [revADict[aWordSent]]
+                        dev['question'] = outQIdx
+                        
 
                         if fields[6] == "1":
                             correctList.append(revADict[aWordSent])
+                        else:
+                            poolList = [revADict[aWordSent]]
 
 
                     else:
-                        poolList.append(revADict[aWordSent])
+                        
                         if fields[6] == "1":
                             correctList.append(revADict[aWordSent])
+                        else:
+                            poolList.append(revADict[aWordSent])
 
-                    if not fields[0] == oldLqId:
+#                    if not fields[0] == oldLqId:
 
-                        if any(lDev):
-                            lDev["answer_pool"] = poolListL
-                            lDev["answer_id"] = correctListL
-                            lValidList.append(lDev)
-                            lDev = {}
-                        lDev["question_id"] = lqCount
-                        poolListL = [revlaDict[aLemmaSent]]
-                        correctListL = []
-                        if fields[6] == "1":
-                            correctListL.append(revlaDict[aLemmaSent])
+#                        if any(lDev):
+#                            lDev["answer_pool"] = poolListL
+#                            lDev["answer_id"] = correctListL
+#                            lValidList.append(lDev)
+#                            lDev = {}
+#                        lDev["question_id"] = lqCount
+#                        poolListL = [revlaDict[aLemmaSent]]
+#                        correctListL = []
+#                        if fields[6] == "1":
+#                            correctListL.append(revlaDict[aLemmaSent])
 
 
-                    else:
-                        poolListL.append(revlaDict[aLemmaSent])
-                        if fields[6] == "1":
-                            correctListL.append(revlaDict[aLemmaSent])
+#                    else:
+#                        poolListL.append(revlaDict[aLemmaSent])
+#                        if fields[6] == "1":
+#                            correctListL.append(revlaDict[aLemmaSent])
                     oldQId = fields[0]
-                    oldLqId = fields[0]
+#                    oldLqId = fields[0]
+
+
             if any(train):
-                train["answer_pool"] = poolList
-                train["answer_id"] = correctList
+                train["bad"] = poolList
+                train["good"] = correctList
                 trainList.append(train)
                 train = {}
 
-            if any(lTrain):
-                lTrain["answer_pool"] = poolListL
-                lTrain["answer_id"] = correctListL
-                lTrainList.append(lTrain)
-                lTrain = {}
+#            if any(lTrain):
+#                lTrain["answer_pool"] = poolListL
+#                lTrain["answer_id"] = correctListL
+#                lTrainList.append(lTrain)
+#                lTrain = {}
 
             if any(test):
-                test["answer_pool"] = poolList
-                test["answer_id"] = correctList
+                test["bad"] = poolList
+                test["good"] = correctList
                 testList.append(test)
                 test = {}
-            if any(lTest):
-                lTest["answer_pool"] = poolListL
-                lTest["answer_id"] = correctListL
-                lTestList.append(lTest)
-                lTest = {}
+
+
+#            if any(lTest):
+#                lTest["answer_pool"] = poolListL
+#                lTest["answer_id"] = correctListL
+#                lTestList.append(lTest)
+#                lTest = {}
 
 
 
 
             if any(dev):
-                dev["answer_pool"] = poolList
-                dev["answer_id"] = correctList
+                dev["bad"] = poolList
+                dev["good"] = correctList
                 validList.append(dev)
                 dev = {}
-            if any(lDev):
-                lDev["answer_pool"] = poolListL
-                lDev["answer_id"] = correctListL
-                lValidList.append(lDev)
-                lDev = {}
+
+
+#            if any(lDev):
+#                lDev["answer_pool"] = poolListL
+#                lDev["answer_id"] = correctListL
+#                lValidList.append(lDev)
+#                lDev = {}
 
 
     qList = []
@@ -521,31 +547,38 @@ if __name__ == '__main__':
         itemDict["id"] = key
         itemDict["text"] = value
         qList.append(itemDict)
-    with open('q.json', 'w') as qJson:
-        for q in qList:
-            json.dump(q, qJson)
-            qJson.write("\n")
+    with open('question', 'wb') as qJson:
+
+#        for q in qList:
+#            json.dump(q, qJson)
+#            qJson.write("\n")
+
+        pickle.dump(qList, qJson)       
+
     qJson.close()
     qDict.clear()
 
-    w2VSrcFile = open ("w2VSrc", "w")
 
 
-    lqList = []
-    for key, value in lqDict.iteritems():
-        itemDict = {}
-        itemDict["id"] = key
-        itemDict["text"] = value
-        values = filter(None, re.split("[!?:\.]+", value))
-        for v in values:
-            w2VSrcFile.write(v+"\n")
-        lqList.append(itemDict)
-    with open('lq.json', 'w') as lqJson:
-        for lq in lqList:
-            json.dump(lq, lqJson)
-            lqJson.write("\n")
-    lqJson.close()
-    lqDict.clear()
+#    w2VSrcFile = open ("w2VSrc", "w")
+
+
+#    lqList = []
+#    for key, value in lqDict.iteritems():
+#        itemDict = {}
+#        itemDict["id"] = key
+#        itemDict["text"] = value
+#        values = filter(None, re.split("[!?:\.]+", value))
+#        for v in values:
+#            w2VSrcFile.write(v+"\n")
+#        lqList.append(itemDict)
+#    with open('lq.json', 'w') as lqJson:
+#        for lq in lqList:
+#            json.dump(lq, lqJson)
+#            lqJson.write("\n")
+#    lqJson.close()
+#    lqDict.clear()
+
 
     aList = []
     for key, value in aDict.iteritems():
@@ -554,69 +587,50 @@ if __name__ == '__main__':
         itemDict["text"] = value
 
         aList.append(itemDict)
-    with open('a.json', 'w') as aJson:
-        for a in aList:
-            json.dump(a, aJson)
-            aJson.write("\n")
+    with open('answers', 'wb') as aJson:
+
+#        for a in aList:
+#            json.dump(a, aJson)
+#            aJson.write("\n")
+
+        pickle.dump(aList, aJson)
+
     aJson.close()
     aDict.clear()
 
-    laList = []
-    for key, value in laDict.iteritems():
-        itemDict = {}
-        itemDict["id"] = key
-        itemDict["text"] = value
-        values = filter(None, re.split("[!?:\.]+", value))
-        for v in values:
-            w2VSrcFile.write(v+"\n")
-        laList.append(itemDict)
-    with open('la.json', 'w') as laJson:
-        laFile = open("la", "w")
-        pickle.dump(lansIdxPair, laFile)
-        laFile.close()
-        for la in laList:
-            json.dump(la, laJson)
-            laJson.write("\n")
-    laJson.close()
-    laDict.clear()
-    w2VSrcFile.close()
 
-    with open('train.json', 'w') as trainJson:
-        for trainItem in trainList:
-            json.dump(trainItem, trainJson)
-            trainJson.write("\n")
-    trainJson.close()
-
-    with open('lTrain.json', 'w') as lTrainJson:
-        for lTrainItem in lTrainList:
-            json.dump(lTrainItem, lTrainJson)
-            lTrainJson.write("\n")
-    lTrainJson.close()
+#    laList = []
+#    for key, value in laDict.iteritems():
+#        itemDict = {}
+#        itemDict["id"] = key
+#        itemDict["text"] = value
+#        values = filter(None, re.split("[!?:\.]+", value))
+#        for v in values:
+#            w2VSrcFile.write(v+"\n")
+#        laList.append(itemDict)
+#    with open('la.json', 'w') as laJson:
+#        laFile = open("la", "w")
+#        pickle.dump(lansIdxPair, laFile)
+#        laFile.close()
+#        for la in laList:
+#            json.dump(la, laJson)
+#            laJson.write("\n")
+#    laJson.close()
+#    laDict.clear()
+#    w2VSrcFile.close()
 
 
-    with open('test.json', 'w') as testJson:
-        for testItem in testList:
-            json.dump(testItem, testJson)
-            testJson.write("\n")
-    testJson.close()
+    with open('train', 'wb') as train:
+        pickle.dump(trainList, train)
+    train.close()
 
-    with open('lTest.json', 'w') as lTestJson:
-        for lTestItem in lTestList:
-            json.dump(lTestItem, lTestJson)
-            lTestJson.write("\n")
-    lTestJson.close()
+    with open('test', 'wb') as test:
+        pickle.dump(testList, test)
+    test.close()
 
-    with open('valid.json', 'w') as validJson:
-        for validItem in validList:
-            json.dump(validItem, validJson)
-            validJson.write("\n")
-    validJson.close()
-
-    with open('lValid.json', 'w') as lValidJson:
-        for lValidItem in lValidList:
-            json.dump(lValidItem, lValidJson)
-            lValidJson.write("\n")
-    lValidJson.close()
+    with open('dev', 'wb') as dev:
+        pickle.dump(validList, dev)
+    dev.close()
 
 
 
@@ -634,18 +648,13 @@ if __name__ == '__main__':
 #    valid2File.close()
 #    valid3File.close()
     validFile.close()
-    wordFile = open("word","w")
+    wordFile = open("word","wb")
     pickle.dump(wordDict, wordFile)
     wordFile.close()
-    lemmaFile = open("lemma","w")
-    pickle.dump(lemmaDict, lemmaFile)
-    lemmaFile.close()
-    revWordFile = open("revWord", "w")
+
+    revWordFile = open("revWord", "wb")
     pickle.dump(revWordDict, revWordFile)
     revWordFile.close()
-    revLemmaFile = open("revLemma", "w")
-    pickle.dump(revLemmaDict, revLemmaFile)
-    revLemmaFile.close()
 
 
 
