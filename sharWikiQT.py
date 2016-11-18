@@ -169,10 +169,10 @@ if __name__ == '__main__':
 
                 questionRaw = fields[1].lower()
 
-#                if questionRaw.split()[0] in qTerms:
-#                    tempQTerm = questionRaw.split()[0]
-#                    randomTerm = random.choice(qTermDic[tempQTerm])
-#                    questionRaw = questionRaw.replace(tempQTerm, randomTerm)
+                if questionRaw.split()[0] in qTerms:
+                    tempQTerm = questionRaw.split()[0]
+                    randomTerm = random.choice(qTermDic[tempQTerm])
+                    questionRaw = questionRaw.replace(tempQTerm, randomTerm)
 
                 answerRaw = fields[5].lower()
 #                print "questionRaw"
@@ -577,7 +577,7 @@ if __name__ == '__main__':
         itemDict["text"] = convert_sent(value)
 
         aList.append(itemDict)
-    with open('answers', 'wb') as aJson:
+    with open('answersQT', 'wb') as aJson:
 
 #        for a in aList:
 #            json.dump(a, aJson)
@@ -610,15 +610,15 @@ if __name__ == '__main__':
 #    w2VSrcFile.close()
 
 
-    with open('train', 'wb') as train:
+    with open('trainQT', 'wb') as train:
         pickle.dump(trainList, train)
     train.close()
 
-    with open('test', 'wb') as test:
+    with open('testQT', 'wb') as test:
         pickle.dump(testList, test)
     test.close()
 
-    with open('dev', 'wb') as dev:
+    with open('devQT', 'wb') as dev:
         pickle.dump(validList, dev)
     dev.close()
 
@@ -638,11 +638,11 @@ if __name__ == '__main__':
 #    valid2File.close()
 #    valid3File.close()
     validFile.close()
-    wordFile = open("word","wb")
+    wordFile = open("wordQT","wb")
     pickle.dump(wordDict, wordFile)
     wordFile.close()
 
-    revWordFile = open("revWord", "wb")
+    revWordFile = open("revWordQT", "wb")
     pickle.dump(revWordDict, revWordFile)
     revWordFile.close()
 
