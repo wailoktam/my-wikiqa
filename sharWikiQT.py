@@ -510,7 +510,7 @@ if __name__ == '__main__':
             if any(train):
                 train["bad"] = poolList
                 train["good"] = correctList
-                trainList.append(train)
+                if correctList != [] : trainList.append(train)
                 train = {}
 
 #            if any(lTrain):
@@ -522,7 +522,7 @@ if __name__ == '__main__':
             if any(test):
                 test["bad"] = poolList
                 test["good"] = correctList
-                testList.append(test)
+                if correctList != [] : testList.append(test)
                 test = {}
 
 
@@ -538,7 +538,7 @@ if __name__ == '__main__':
             if any(dev):
                 dev["bad"] = poolList
                 dev["good"] = correctList
-                validList.append(dev)
+                if correctList != [] : validList.append(dev)
                 dev = {}
 
 
