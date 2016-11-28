@@ -45,6 +45,8 @@ def convert_sent(sent):
     new_sent = []
     for term in sent:
         new_sent.append(revWordDict[term])
+    print "new sent"
+    print new_sent
     return new_sent
 
 
