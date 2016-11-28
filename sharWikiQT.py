@@ -42,13 +42,11 @@ def lparse(input):
     return("".join(fixed))
 
 def convert_sent(sent):
-    print "sent"+"\n"
-    print sent
+
     new_sent = []
     for term in sent:
         new_sent.append(revWordDict[term])
-    print "new sent"+"\n"
-    print new_sent
+
     return new_sent
 
 
@@ -176,7 +174,11 @@ if __name__ == '__main__':
                 if questionRaw.split()[0] in qTerms:
                     tempQTerm = questionRaw.split()[0]
                     randomTerm = random.choice(qTermDic[tempQTerm])
+                    print "questionRaw b4"
+                    print questionRaw
                     questionRaw = questionRaw.replace(tempQTerm, randomTerm)
+                    print "questionRaw after"
+                    print questionRaw
 
                 answerRaw = fields[5].lower()
 #                print "questionRaw"
