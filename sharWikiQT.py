@@ -42,11 +42,13 @@ def lparse(input):
     return("".join(fixed))
 
 def convert_sent(sent):
+    print "sent"+"\n"
+    print sent+"\n"
     new_sent = []
     for term in sent:
         new_sent.append(revWordDict[term])
-    print "new sent"
-    print new_sent
+    print "new sent"+"\n"
+    print new_sent+"\n"
     return new_sent
 
 
