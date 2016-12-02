@@ -174,11 +174,11 @@ if __name__ == '__main__':
                 if questionRaw.split()[0] in qTerms:
                     tempQTerm = questionRaw.split()[0]
                     randomTerm = random.choice(qTermDic[tempQTerm])
-                    print "questionRaw b4"
-                    print questionRaw
+#                    print "questionRaw b4"
+#                   print questionRaw
                     questionRaw = questionRaw.replace(tempQTerm, randomTerm)
-                    print "questionRaw after"
-                    print questionRaw
+#                    print "questionRaw after"
+#                    print questionRaw
 
 #only include who when where and what q
 
