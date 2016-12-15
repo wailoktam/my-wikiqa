@@ -146,9 +146,10 @@ if __name__ == '__main__':
 
 
 
-    qTerms = ['who', 'when', 'where', 'what']
-    q_file = open('qTerms', 'rb')
-    qTermDic = pickle.load(q_file)
+#    qTerms = ['who', 'when', 'where', 'what']
+    qTerms = ['who']
+#    q_file = open('qTerms', 'rb')
+#    qTermDic = pickle.load(q_file)
 
 
     for l,fileList  in enumerate(fileList):
@@ -173,10 +174,10 @@ if __name__ == '__main__':
 
                 if questionRaw.split()[0] in qTerms:
                     tempQTerm = questionRaw.split()[0]
-                    randomTerm = random.choice(qTermDic[tempQTerm])
+#                    randomTerm = random.choice(qTermDic[tempQTerm])
 #                    print "questionRaw b4"
 #                   print questionRaw
-                    questionRaw = questionRaw.replace(tempQTerm, randomTerm)
+                    questionRaw = questionRaw.replace(tempQTerm, "religious")
 #                    print "questionRaw after"
 #                    print questionRaw
 
