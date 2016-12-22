@@ -177,7 +177,7 @@ if __name__ == '__main__':
 #                    randomTerm = random.choice(qTermDic[tempQTerm])
 #                    print "questionRaw b4"
 #                   print questionRaw
-                    questionRaw = questionRaw.replace(tempQTerm, "religious")
+                    questionRaw = questionRaw.replace(tempQTerm, "jason")
 #                    print "questionRaw after"
 #                    print questionRaw
 
