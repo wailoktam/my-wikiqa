@@ -147,7 +147,7 @@ if __name__ == '__main__':
 
 
 #    qTerms = ['who', 'when', 'where', 'what']
-    qTerms = ['where']
+    qTerms = ['when']
 #    q_file = open('qTerms', 'rb')
 #    qTermDic = pickle.load(q_file)
 
@@ -177,7 +177,7 @@ if __name__ == '__main__':
 #                    randomTerm = random.choice(qTermDic[tempQTerm])
 #                    print "questionRaw b4"
 #                   print questionRaw
-                    questionRaw = questionRaw.replace(tempQTerm, "gettysburg")
+                    questionRaw = questionRaw.replace(tempQTerm, "1994")
 #                    print "questionRaw after"
 #                    print questionRaw
 
@@ -586,7 +586,7 @@ if __name__ == '__main__':
         itemDict["text"] = convert_sent(value)
 
         aList.append(itemDict)
-    with open('answersQTd_where', 'wb') as aJson:
+    with open('answersQTd_when', 'wb') as aJson:
 
 #        for a in aList:
 #            json.dump(a, aJson)
@@ -619,15 +619,15 @@ if __name__ == '__main__':
 #    w2VSrcFile.close()
 
 
-    with open('trainQTd_where', 'wb') as train:
+    with open('trainQTd_when', 'wb') as train:
         pickle.dump(trainList, train)
     train.close()
 
-    with open('testQTd_where', 'wb') as test:
+    with open('testQTd_when', 'wb') as test:
         pickle.dump(testList, test)
     test.close()
 
-    with open('devQTd_where', 'wb') as dev:
+    with open('devQTd_when', 'wb') as dev:
         pickle.dump(validList, dev)
     dev.close()
 
