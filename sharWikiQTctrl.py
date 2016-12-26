@@ -145,8 +145,8 @@ if __name__ == '__main__':
 
 
 
-
-    qTerms = ['who', 'when', 'where', 'what']
+    qTerms = ['who']
+#    qTerms = ['who', 'when', 'where', 'what']
     q_file = open('qTerms', 'rb')
     qTermDic = pickle.load(q_file)
 
@@ -568,7 +568,7 @@ if __name__ == '__main__':
 #        itemDict["text"] = value
 #        values = filter(None, re.split("[!?:\.]+", value))
 #        for v in values:
-#            w2VSrcFile.write(v+"\n")
+#            w2VSrcFilehttps://mail.google.com/mail/#inbox.write(v+"\n")
 #        lqList.append(itemDict)
 #    with open('lq.json', 'w') as lqJson:
 #        for lq in lqList:
@@ -585,7 +585,7 @@ if __name__ == '__main__':
         itemDict["text"] = convert_sent(value)
 
         aList.append(itemDict)
-    with open('answersQTCt', 'wb') as aJson:
+    with open('answersQTCtd_who', 'wb') as aJson:
 
 #        for a in aList:
 #            json.dump(a, aJson)
@@ -618,15 +618,15 @@ if __name__ == '__main__':
 #    w2VSrcFile.close()
 
 
-    with open('trainQTCt', 'wb') as train:
+    with open('trainQTCtd_who', 'wb') as train:
         pickle.dump(trainList, train)
     train.close()
 
-    with open('testQTCt', 'wb') as test:
+    with open('testQTCtd_who', 'wb') as test:
         pickle.dump(testList, test)
     test.close()
 
-    with open('devQTCt', 'wb') as dev:
+    with open('devQTCtd_who', 'wb') as dev:
         pickle.dump(validList, dev)
     dev.close()
 
@@ -646,11 +646,11 @@ if __name__ == '__main__':
 #    valid2File.close()
 #    valid3File.close()
     validFile.close()
-    wordFile = open("wordQTCt","wb")
+    wordFile = open("wordQTCtd","wb")
     pickle.dump(wordDict, wordFile)
     wordFile.close()
 
-    revWordFile = open("revWordQTCt", "wb")
+    revWordFile = open("revWordQTCtd", "wb")
     pickle.dump(revWordDict, revWordFile)
     revWordFile.close()
 
