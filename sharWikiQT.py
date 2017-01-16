@@ -586,7 +586,7 @@ if __name__ == '__main__':
         itemDict["text"] = convert_sent(value)
 
         aList.append(itemDict)
-    with open('answersQTd_when', 'wb') as aJson:
+    with open('answersQT_when', 'wb') as aJson:
 
 #        for a in aList:
 #            json.dump(a, aJson)
@@ -619,15 +619,15 @@ if __name__ == '__main__':
 #    w2VSrcFile.close()
 
 
-    with open('trainQTd_when', 'wb') as train:
+    with open('trainQT_when', 'wb') as train:
         pickle.dump(trainList, train)
     train.close()
 
-    with open('testQTd_when', 'wb') as test:
+    with open('testQT_when', 'wb') as test:
         pickle.dump(testList, test)
     test.close()
 
-    with open('devQTd_when', 'wb') as dev:
+    with open('devQT_when', 'wb') as dev:
         pickle.dump(validList, dev)
     dev.close()
 
@@ -647,11 +647,11 @@ if __name__ == '__main__':
 #    valid2File.close()
 #    valid3File.close()
     validFile.close()
-    wordFile = open("wordQTd","wb")
+    wordFile = open("wordQT","wb")
     pickle.dump(wordDict, wordFile)
     wordFile.close()
 
-    revWordFile = open("revWordQTd", "wb")
+    revWordFile = open("revWordQT", "wb")
     pickle.dump(revWordDict, revWordFile)
     revWordFile.close()
 
