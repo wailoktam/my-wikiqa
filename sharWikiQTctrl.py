@@ -212,7 +212,7 @@ if __name__ == '__main__':
 #                        print "qWord"
 #                        qWord = token.find(".//lemma").text
 #                        qWord = token.find(".//word").text
-#                        print "["+qWord+"]"
+#                        print "["+qWord+"]"schaumburg
 #                    lemma = token.find(".//lemma").text
                         word = token.find(".//lemma").text
                         qWordList.append(word)
