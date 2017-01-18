@@ -145,7 +145,7 @@ if __name__ == '__main__':
 
 
 
-    qTerms = ['where']
+    qTerms = ['what']
 #    qTerms = ['who', 'when', 'where', 'what']
     q_file = open('qTerms', 'rb')
     qTermDic = pickle.load(q_file)
@@ -158,7 +158,7 @@ if __name__ == '__main__':
         lTest = {}
         lTrain = {}
         lDev = {}
-
+        whatCounter = 0
         for file  in fileList:
             oldQId = ""
             oldLqId = ""
@@ -172,6 +172,7 @@ if __name__ == '__main__':
                 questionRaw = fields[1].lower()
 
                 if questionRaw.split()[0] in qTerms:
+                    whatCounter += 1
 #                    tempQTerm = questionRaw.split()[0]
 #                    randomTerm = random.choice(qTermDic[tempQTerm])
 #                    print "questionRaw b4"
@@ -585,7 +586,7 @@ if __name__ == '__main__':
         itemDict["text"] = convert_sent(value)
 
         aList.append(itemDict)
-    with open('answersQTCtd_where', 'wb') as aJson:
+    with open('answerQTCtd_what', 'wb') as aJson:
 
 #        for a in aList:
 #            json.dump(a, aJson)
@@ -618,15 +619,15 @@ if __name__ == '__main__':
 #    w2VSrcFile.close()
 
 
-    with open('trainQTCtd_where', 'wb') as train:
+    with open('trainQTCtd_what', 'wb') as train:
         pickle.dump(trainList, train)
     train.close()
 
-    with open('testQTCtd_where', 'wb') as test:
+    with open('testQTCtd_what', 'wb') as test:
         pickle.dump(testList, test)
     test.close()
 
-    with open('devQTCtd_where', 'wb') as dev:
+    with open('devQTCtd_what', 'wb') as dev:
         pickle.dump(validList, dev)
     dev.close()
 
@@ -653,6 +654,7 @@ if __name__ == '__main__':
     revWordFile = open("revWordQTCtd", "wb")
     pickle.dump(revWordDict, revWordFile)
     revWordFile.close()
+    print WhatCounter
 
 
 
