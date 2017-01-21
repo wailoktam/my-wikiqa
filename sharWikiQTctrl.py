@@ -170,8 +170,9 @@ if __name__ == '__main__':
                 fields = line.split("\t")
 
                 questionRaw = fields[1].lower()
-
-                if not questionRaw.split()[0] in qTerms:
+                if 1==1:
+    
+#                if not questionRaw.split()[0] in qTerms:
                     whatCounter += 1
 #                    tempQTerm = questionRaw.split()[0]
 #                    randomTerm = random.choice(qTermDic[tempQTerm])
@@ -586,7 +587,7 @@ if __name__ == '__main__':
         itemDict["text"] = convert_sent(value)
 
         aList.append(itemDict)
-    with open('answerQTCt_what', 'wb') as aJson:
+    with open('answerQTCt', 'wb') as aJson:
 
 #        for a in aList:
 #            json.dump(a, aJson)
@@ -619,15 +620,15 @@ if __name__ == '__main__':
 #    w2VSrcFile.close()
 
 
-    with open('trainQTCt_what', 'wb') as train:
+    with open('trainQTCt', 'wb') as train:
         pickle.dump(trainList, train)
     train.close()
 
-    with open('testQTCt_what', 'wb') as test:
+    with open('testQTCt', 'wb') as test:
         pickle.dump(testList, test)
     test.close()
 
-    with open('devQTCt_what', 'wb') as dev:
+    with open('devQTCt', 'wb') as dev:
         pickle.dump(validList, dev)
     dev.close()
 
