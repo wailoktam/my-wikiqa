@@ -619,7 +619,7 @@ if __name__ == '__main__':
 #    w2VSrcFile.close()
 
 
-    with open('trainQT_when", 'wb') as train:
+    with open('trainQT_when', 'wb') as train:
         pickle.dump(trainList, train)
     train.close()
 
