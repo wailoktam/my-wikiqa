@@ -13,6 +13,14 @@ from xmljson import BadgerFish
 from collections import OrderedDict
 nlp = StanfordCoreNLP('http://localhost:9000')
 
+import unicodedata
+
+def stripAccent(text):
+
+   text = unicode(text).decode('utf-8')
+
+   return str(''.join(char for char in icodedata.normalize('NFKD', text) if unicodedata.category(char) != 'Mn'))
+
 
 def parse(input):
     dbg = open("debug","w")
@@ -145,7 +153,7 @@ if __name__ == '__main__':
 
 
 
-    qTerms = ['where']
+#    qTerms = ['where']
 #    qTerms = ['who', 'when', 'where', 'what']
     q_file = open('qTerms', 'rb')
     qTermDic = pickle.load(q_file)
@@ -169,7 +177,7 @@ if __name__ == '__main__':
                 line = str.strip(line)
                 fields = line.split("\t")
 
-                questionRaw = fields[1].lower()
+                questionRaw = stripAccent(fields[1].lower())
                 if 1==1:
     
 #                if questionRaw.split()[0] in qTerms:
@@ -184,7 +192,7 @@ if __name__ == '__main__':
 
 #only include who when where and what q
 
-                    answerRaw = fields[5].lower()
+                    answerRaw = stripAccent(fields[5].lower())
 #                print "questionRaw"
 #                print questionRaw
                     parseQXML = etree.fromstring(lparse(str(questionRaw)))
