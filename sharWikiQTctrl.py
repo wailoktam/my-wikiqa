@@ -19,7 +19,7 @@ def stripAccent(text):
 
    text = unicode(text).decode('utf-8')
 
-   return str(''.join(char for char in icodedata.normalize('NFKD', text) if unicodedata.category(char) != 'Mn'))
+   return str(''.join(char for char in unicodedata.normalize('NFKD', text) if unicodedata.category(char) != 'Mn'))
 
 
 def parse(input):
