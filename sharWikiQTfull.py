@@ -13,6 +13,14 @@ from xmljson import BadgerFish
 from collections import OrderedDict
 nlp = StanfordCoreNLP('http://localhost:9000')
 
+import unicodedata
+
+def stripAccent(text):
+
+   text = unicode(text).decode('utf-8')
+
+   return str(''.join(char for char in unicodedata.normalize('NFKD', text) if unicodedata.category(char) != 'Mn'))
+
 
 def parse(input):
     dbg = open("debug","w")
@@ -42,9 +50,11 @@ def lparse(input):
     return("".join(fixed))
 
 def convert_sent(sent):
+
     new_sent = []
     for term in sent:
         new_sent.append(revWordDict[term])
+
     return new_sent
 
 
@@ -143,8 +153,8 @@ if __name__ == '__main__':
 
 
 
-
-    qTerms = ['who', 'when', 'where', 'what', 'how']
+    qTerms = ['when']
+#    qTerms = ['who', 'when', 'where', 'what']
     q_file = open('qTerms', 'rb')
     qTermDic = pickle.load(q_file)
 
@@ -156,7 +166,7 @@ if __name__ == '__main__':
         lTest = {}
         lTrain = {}
         lDev = {}
-
+        whatCounter = 0
         for file  in fileList:
             oldQId = ""
             oldLqId = ""
@@ -167,55 +177,63 @@ if __name__ == '__main__':
                 line = str.strip(line)
                 fields = line.split("\t")
 
-                questionRaw = fields[1].lower()
-
+                questionRaw = stripAccent(fields[1].lower())
+                if 1==1:
+    
 #                if questionRaw.split()[0] in qTerms:
+                    whatCounter += 1
 #                    tempQTerm = questionRaw.split()[0]
 #                    randomTerm = random.choice(qTermDic[tempQTerm])
-#                    questionRaw = questionRaw.replace(tempQTerm, randomTerm)
+#                    print "questionRaw b4"
+#                    print questionRaw
+ #                   questionRaw = questionRaw.replace(tempQTerm, randomTerm)
+ #                   print "questionRaw after"
+#                    print questionRaw
 
-                answerRaw = fields[5].lower()
+#only include who when where and what q
+
+                    answerRaw = stripAccent(fields[5].lower())
 #                print "questionRaw"
 #                print questionRaw
-                parseQXML = etree.fromstring(lparse(str(questionRaw)))
+                    parseQXML = etree.fromstring(lparse(str(questionRaw)))
 #                lparseQXML =  etree.fromstring(lparse(questionRaw))
-                qTokens = parseQXML.findall(".//token")
+                    qTokens = parseQXML.findall(".//token")
 #                lqTokens = lparseQXML.findall(".//token")
-                parseAXML = etree.fromstring(lparse(str(answerRaw)))
+                    parseAXML = etree.fromstring(lparse(str(answerRaw)))
 #                lparseAXML = etree.fromstring(lparse(answerRaw))
-                aTokens = parseAXML.findall(".//token")
+                    aTokens = parseAXML.findall(".//token")
 #                laTokens = lparseAXML.findall(".//token")
 #                print ("q tokens")
 #                print tokens
-                outQIdx = []
-                outlqIdx = []
-                outAIdx = []
-                outlaIdx = []
+                    outQIdx = []
+                    outlqIdx = []
+                    outAIdx = []
+                    outlaIdx = []
 
-                qWordList = []
-                qLemmaList = []
-                aWordList = []
-                aLemmaList = []
+                    qWordList = []
+                    qLemmaList = []
+                    aWordList = []
+                    aLemmaList = []
 
 
 #                if not len(fields) == 4: sys.exit()
-                for t,token in enumerate(qTokens):
+                    for t,token in enumerate(qTokens):
 #                    if t == 0:
 #                        print "qWord"
 #                        qWord = token.find(".//lemma").text
 #                        qWord = token.find(".//word").text
-#                        print "["+qWord+"]"
+#                        print "["+qWord+"]"schaumburg
 #                    lemma = token.find(".//lemma").text
-                    word = token.find(".//lemma").text
-                    qWordList.append(word)
-                    if word not in revWordDict.keys():
-                        wordKey += 1
-                        wordDict[wordKey] = word
-                        revWordDict[word] = wordKey
-                        outQIdx.append(wordKey)
-                    else:
-                        existWKey = revWordDict[word]
-                        outQIdx.append(existWKey)
+                        word = token.find(".//lemma").text
+                        qWordList.append(word)
+                        if word not in revWordDict.keys():
+                            wordKey += 1
+                            wordDict[wordKey] = word
+                            revWordDict[word] = wordKey
+                            outQIdx.append(wordKey)
+                        else:
+                            existWKey = revWordDict[word]
+                            outQIdx.append(existWKey)
 
 #                print "questionLemma"
 #                print qLemma
@@ -236,17 +254,17 @@ if __name__ == '__main__':
 #                        outlqIdx.append(existLKey)
 #                qLemmaSent = " ".join(qLemmaList)
 
-                for t, token in enumerate(aTokens):
-                    word = token.find(".//lemma").text
-                    aWordList.append(word)
-                    if word not in revWordDict.keys():
-                        wordKey += 1
-                        wordDict[wordKey] = word
-                        revWordDict[word] = wordKey
-                        outAIdx.append(wordKey)
-                    else:
-                        existWKey = revWordDict[word]
-                        outAIdx.append(existWKey)
+                    for t, token in enumerate(aTokens):
+                        word = token.find(".//lemma").text
+                        aWordList.append(word)
+                        if word not in revWordDict.keys():
+                            wordKey += 1
+                            wordDict[wordKey] = word
+                            revWordDict[word] = wordKey
+                            outAIdx.append(wordKey)
+                        else:
+                            existWKey = revWordDict[word]
+                            outAIdx.append(existWKey)
 
 
 
@@ -281,53 +299,53 @@ if __name__ == '__main__':
 
 
 
-                if l == 0:
+                    if l == 0:
 #                    print ("fields0")
 #                    print fields[0]
 #                    print ("oldQId")
 #                    print oldQId
 
 
-                    if not fields[0] == oldQId:
+                        if not fields[0] == oldQId:
 
 #                        print ("train")
 #                        print (train)
 #                        print ("trainList")
 #                        print (trainList)
-                        if any(train):
-                            train["bad"] = poolList
-                            train["good"] = correctList
-                            if correctList != [] : trainList.append(train)
-                            train = {}
+                            if any(train):
+                                train["bad"] = poolList
+                                train["good"] = correctList
+                                if correctList != [] : trainList.append(train)
+                                train = {}
 
-                        correctList = []
-                        poolList = []
-                        train['question'] = convert_sent(qWordList)
-                        train["question_id"] = qCount
-                        qCount = qCount + 1
+                            correctList = []
+                            poolList = []
+                            train['question'] = convert_sent(qWordList)
+                            train["question_id"] = qCount
+                            qCount = qCount + 1
                     
-                        if fields[6]  == "1":
-                            correctList.append(aCount)
-                            aDic[aCount] = aWordList
-                            aCount += 1
+                            if fields[6]  == "1":
+                                correctList.append(aCount)
+                                aDic[aCount] = aWordList
+                                aCount += 1
+
+                            else:
+                                poolList = [aCount]
+                                aDic[aCount] = aWordList
+                                aCount += 1
+
 
                         else:
-                            poolList = [aCount]
-                            aDic[aCount] = aWordList
-                            aCount += 1
-
-
-                    else:
                         
-                        if fields[6] == "1":
+                            if fields[6] == "1":
 #                            print ("fields6 hit")
-                            correctList.append(aCount)
-                            aDic[aCount] = aWordList
-                            aCount += 1
-                        else:
-                            poolList.append(aCount)
-                            aDic[aCount] = aWordList
-                            aCount += 1
+                                correctList.append(aCount)
+                                aDic[aCount] = aWordList
+                                aCount += 1
+                            else:
+                                poolList.append(aCount)
+                                aDic[aCount] = aWordList
+                                aCount += 1
 
 #                    if not fields[0] == oldLqId:
 
@@ -349,11 +367,11 @@ if __name__ == '__main__':
 #                        if fields[6] == "1":
 #                            correctListL.append(revlaDict[aLemmaSent])
 
-                    oldQId = fields[0]
+                        oldQId = fields[0]
 #                    oldLqId = fields[0]
 
 
-                elif l == 1:
+                    elif l == 1:
 #                    if startNewFile == 1:
 #                        print "start1"
 #                        if any(train):
@@ -380,35 +398,35 @@ if __name__ == '__main__':
 #                        startNewFile = 0
 
 
-                    if not fields[0] == oldQId:
-                        if any(test):
-                            test["bad"] = poolList
-                            test["good"] = correctList
-                            if correctList != [] : testList.append(test)
-                            test = {}
-                        test["question_id"] = qCount
-                        qCount = qCount + 1
-                        test['question'] = convert_sent(qWordList)
-                        poolList = []
-                        correctList = []
-                        if fields[6] == "1":
-                            correctList.append(aCount)
-                            aDic[aCount] = aWordList
-                            aCount += 1
+                        if not fields[0] == oldQId:
+                            if any(test):
+                                test["bad"] = poolList
+                                test["good"] = correctList
+                                if correctList != [] : testList.append(test)
+                                test = {}
+                            test["question_id"] = qCount
+                            qCount = qCount + 1
+                            test['question'] = convert_sent(qWordList)
+                            poolList = []
+                            correctList = []
+                            if fields[6] == "1":
+                                correctList.append(aCount)
+                                aDic[aCount] = aWordList
+                                aCount += 1
+                            else:
+                                poolList = [aCount]
+                                aDic[aCount] = aWordList
+                                aCount += 1
                         else:
-                            poolList = [aCount]
-                            aDic[aCount] = aWordList
-                            aCount += 1
-                    else:
                         
-                        if fields[6] == "1":
-                            correctList.append(aCount)
-                            aDic[aCount] = aWordList
-                            aCount += 1
-                        else:
-                            poolList.append(aCount)
-                            aDic[aCount] = aWordList
-                            aCount += 1
+                            if fields[6] == "1":
+                                correctList.append(aCount)
+                                aDic[aCount] = aWordList
+                                aCount += 1
+                            else:
+                                poolList.append(aCount)
+                                aDic[aCount] = aWordList
+                                aCount += 1
 
 #                    if not fields[0] == oldLqId:
 #                        if any(lTest):
@@ -427,10 +445,10 @@ if __name__ == '__main__':
 #                        poolListL.append(revlaDict[aLemmaSent])
 #                        if fields[6] == "1":
 #                            correctListL.append(revlaDict[aLemmaSent])
-                    oldQId = fields[0]
+                        oldQId = fields[0]
 #                    oldLqId = fields[0]
 
-                elif l == 2:
+                    elif l == 2:
 #                    if startNewFile == 1:
 #                        print "start2"
 #                        if any(test):
@@ -451,39 +469,39 @@ if __name__ == '__main__':
 #                        else:
 #                            exit()
 #                        startNewFile = 0
-                    if not fields[0] == oldQId:
+                        if not fields[0] == oldQId:
 
-                        if any(dev):
-                            dev["bad"] = poolList
-                            dev["good"] = correctList
-                            if correctList != [] : validList.append(dev)
-                            dev = {}
-                        correctList = []
-                        poolList = []
-                        dev["question_id"] = qCount
-                        dev['question'] = convert_sent(qWordList)
-                        qCount = qCount + 1
+                            if any(dev):
+                                dev["bad"] = poolList
+                                dev["good"] = correctList
+                                if correctList != [] : validList.append(dev)
+                                dev = {}
+                            correctList = []
+                            poolList = []
+                            dev["question_id"] = qCount
+                            dev['question'] = convert_sent(qWordList)
+                            qCount = qCount + 1
 
-                        if fields[6] == "1":
-                            correctList.append(aCount)
-                            aDic[aCount] = aWordList
-                            aCount += 1
+                            if fields[6] == "1":
+                                correctList.append(aCount)
+                                aDic[aCount] = aWordList
+                                aCount += 1
+                            else:
+                                poolList = [aCount]
+                                aDic[aCount] = aWordList
+                                aCount += 1
+
+
                         else:
-                            poolList = [aCount]
-                            aDic[aCount] = aWordList
-                            aCount += 1
 
-
-                    else:
-                        
-                        if fields[6] == "1":
-                            correctList.append(aCount)
-                            aDic[aCount] = aWordList
-                            aCount += 1
-                        else:
-                            poolList.append(aCount)
-                            aDic[aCount] = aWordList
-                            aCount += 1
+                            if fields[6] == "1":
+                                correctList.append(aCount)
+                                aDic[aCount] = aWordList
+                                aCount += 1
+                            else:
+                                poolList.append(aCount)
+                                aDic[aCount] = aWordList
+                                aCount += 1
 
 #                    if not fields[0] == oldLqId:
 
@@ -503,7 +521,7 @@ if __name__ == '__main__':
 #                        poolListL.append(revlaDict[aLemmaSent])
 #                        if fields[6] == "1":
 #                            correctListL.append(revlaDict[aLemmaSent])
-                    oldQId = fields[0]
+                        oldQId = fields[0]
 #                    oldLqId = fields[0]
 
 
@@ -560,7 +578,7 @@ if __name__ == '__main__':
 #        itemDict["text"] = value
 #        values = filter(None, re.split("[!?:\.]+", value))
 #        for v in values:
-#            w2VSrcFile.write(v+"\n")
+#            w2VSrcFilehttps://mail.google.com/mail/#inbox.write(v+"\n")
 #        lqList.append(itemDict)
 #    with open('lq.json', 'w') as lqJson:
 #        for lq in lqList:
@@ -579,9 +597,9 @@ if __name__ == '__main__':
         aList.append(itemDict)
     with open('answers', 'wb') as aJson:
 
-#        for a in aList:
-#            json.dump(a, aJson)
-#            aJson.write("\n")
+        for a in aList:
+            json.dump(a, aJson)
+            aJson.write("\n")
 
         pickle.dump(aList, aJson)
 
@@ -610,15 +628,15 @@ if __name__ == '__main__':
 #    w2VSrcFile.close()
 
 
-    with open('train', 'wb') as train:
+    with open('trainQTCt', 'wb') as train:
         pickle.dump(trainList, train)
     train.close()
 
-    with open('test', 'wb') as test:
+    with open('testQTCt', 'wb') as test:
         pickle.dump(testList, test)
     test.close()
 
-    with open('dev', 'wb') as dev:
+    with open('devQTCt', 'wb') as dev:
         pickle.dump(validList, dev)
     dev.close()
 
@@ -638,13 +656,15 @@ if __name__ == '__main__':
 #    valid2File.close()
 #    valid3File.close()
     validFile.close()
-    wordFile = open("word","wb")
+    wordFile = open("word", "wb")
     pickle.dump(wordDict, wordFile)
     wordFile.close()
 
     revWordFile = open("revWord", "wb")
     pickle.dump(revWordDict, revWordFile)
     revWordFile.close()
+
+    print whatCounter
 
 
 
