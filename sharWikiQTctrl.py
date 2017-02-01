@@ -628,15 +628,15 @@ if __name__ == '__main__':
 #    w2VSrcFile.close()
 
 
-    with open('trainQTCt', 'wb') as train:
+    with open('trainQTCt_when', 'wb') as train:
         pickle.dump(trainList, train)
     train.close()
 
-    with open('testQTCt', 'wb') as test:
+    with open('testQTCt_when', 'wb') as test:
         pickle.dump(testList, test)
     test.close()
 
-    with open('devQTCt', 'wb') as dev:
+    with open('devQTCt_when', 'wb') as dev:
         pickle.dump(validList, dev)
     dev.close()
 
@@ -656,13 +656,7 @@ if __name__ == '__main__':
 #    valid2File.close()
 #    valid3File.close()
     validFile.close()
-    wordFile = open("wordQTCt","wb")
-    pickle.dump(wordDict, wordFile)
-    wordFile.close()
 
-    revWordFile = open("revWordQTCt", "wb")
-    pickle.dump(revWordDict, revWordFile)
-    revWordFile.close()
     print whatCounter
 
 
