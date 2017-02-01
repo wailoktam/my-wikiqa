@@ -153,7 +153,7 @@ if __name__ == '__main__':
 
 
 
-#    qTerms = ['where']
+    qTerms = ['when']
 #    qTerms = ['who', 'when', 'where', 'what']
     q_file = open('qTerms', 'rb')
     qTermDic = pickle.load(q_file)
@@ -178,9 +178,9 @@ if __name__ == '__main__':
                 fields = line.split("\t")
 
                 questionRaw = stripAccent(fields[1].lower())
-                if 1==1:
+#                if 1==1:
     
-#                if questionRaw.split()[0] in qTerms:
+                if questionRaw.split()[0] in qTerms:
                     whatCounter += 1
 #                    tempQTerm = questionRaw.split()[0]
 #                    randomTerm = random.choice(qTermDic[tempQTerm])
@@ -588,23 +588,23 @@ if __name__ == '__main__':
 #    lqDict.clear()
 
 
-    aList = []
-    for key, value in aDic.iteritems():
-        itemDict = {}
-        itemDict["id"] = key
-        itemDict["text"] = convert_sent(value)
+#    aList = []
+#    for key, value in aDic.iteritems():
+#        itemDict = {}
+#        itemDict["id"] = key
+#        itemDict["text"] = convert_sent(value)
 
-        aList.append(itemDict)
-    with open('answerQTCt', 'wb') as aJson:
+#        aList.append(itemDict)
+#    with open('answers', 'wb') as aJson:
 
 #        for a in aList:
 #            json.dump(a, aJson)
 #            aJson.write("\n")
 
-        pickle.dump(aList, aJson)
+#        pickle.dump(aList, aJson)
 
-    aJson.close()
-    aDic.clear()
+#    aJson.close()
+#    aDic.clear()
 
 
 #    laList = []

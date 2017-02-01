@@ -177,7 +177,7 @@ if __name__ == '__main__':
 #                    randomTerm = random.choice(qTermDic[tempQTerm])
 #                    print "questionRaw b4"
 #                   print questionRaw
-                    questionRaw = questionRaw.replace(tempQTerm, "1994")
+                    questionRaw = questionRaw.replace(tempQTerm, "1923")
 #                    print "questionRaw after"
 #                    print questionRaw
 
@@ -579,22 +579,22 @@ if __name__ == '__main__':
 #    lqDict.clear()
 
 
-    aList = []
-    for key, value in aDic.iteritems():
-        itemDict = {}
-        itemDict["id"] = key
-        itemDict["text"] = convert_sent(value)
+#    aList = []
+#    for key, value in aDic.iteritems():
+#        itemDict = {}
+#        itemDict["id"] = key
+#        itemDict["text"] = convert_sent(value)
 
-        aList.append(itemDict)
-    with open('answerQT_when', 'wb') as aJson:
+#        aList.append(itemDict)
+#   with open('answers', 'wb') as aJson:
 
 #        for a in aList:
 #            json.dump(a, aJson)
 #            aJson.write("\n")
 
-        pickle.dump(aList, aJson)
+#        pickle.dump(aList, aJson)
 
-    aJson.close()
+#    aJson.close()
     aDic.clear()
 
 
@@ -647,13 +647,9 @@ if __name__ == '__main__':
 #    valid2File.close()
 #    valid3File.close()
     validFile.close()
-    wordFile = open("wordQT","wb")
-    pickle.dump(wordDict, wordFile)
-    wordFile.close()
 
-    revWordFile = open("revWordQT", "wb")
-    pickle.dump(revWordDict, revWordFile)
-    revWordFile.close()
+
+
 
 
 
