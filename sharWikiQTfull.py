@@ -595,15 +595,15 @@ if __name__ == '__main__':
         itemDict["text"] = convert_sent(value)
 
         aList.append(itemDict)
-    with open('answers', 'wb') as aJson:
+    with open('answers', 'wb') as aFile:
 
-        for a in aList:
-            json.dump(a, aJson)
-            aJson.write("\n")
+#        for a in aList:
+#            json.dump(a, aJson)
+#            aJson.write("\n")
 
-        pickle.dump(aList, aJson)
+        pickle.dump(aList, aFile)
 
-    aJson.close()
+    aFile.close()
     aDic.clear()
 
 
