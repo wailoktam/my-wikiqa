@@ -72,7 +72,7 @@ if __name__ == '__main__':
                 print "qWordListB4\n"
                 print qWordList
                 print "\n"
-                qWordList[0]  = "1923"
+                qWordList[0]  = "william"
                 print "qWordListafter\n"
                 print qWordList
                 print "\n"
