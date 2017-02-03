@@ -76,7 +76,7 @@ if __name__ == '__main__':
                 debugShare.write("\n")
                 qWordList[0]  = "william"
                 debugShare.write("after\n")
-                debugShare.write(qWordList)
+                debugShare.write(" ".join(qWordList))
                 debugShare.write("\n")
                 outLine["question"] = convert(revVocab, qWordList)
                 debugShare.write("testConvert\n")
