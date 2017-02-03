@@ -80,7 +80,7 @@ if __name__ == '__main__':
                 debugShare.write("\n")
                 outLine["question"] = convert(revVocab, qWordList)
                 debugShare.write("testConvert\n")
-                debugShare.write(revert(vocab, outLine["question"]))
+                debugShare.write(" ".join(revert(vocab, outLine["question"])))
                 debugShare.write("\n")
                 debugShare.write("id\n")
                 debugShare.write(str(inLine["question_id"]))
