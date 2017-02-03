@@ -71,8 +71,8 @@ if __name__ == '__main__':
             qWordList = revert(vocab, inLine["question"])
             if qWordList[0] in qTerms:
                 debugShare.write("b4\n")
-                debugShare.write(" ".join(revert(vocab,qWordList)))
-                #        debugRegen.write(stripAccent())
+                debugShare.write(" ".join(qWordList))
+                #        debugRegen.write(stripAccent())java -mx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer
                 debugShare.write("\n")
                 qWordList[0]  = "william"
                 debugShare.write("after\n")
