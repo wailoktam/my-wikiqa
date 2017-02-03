@@ -195,11 +195,11 @@ if __name__ == '__main__':
                     answerRaw = stripAccent(fields[5].lower())
 #                print "questionRaw"
 #                print questionRaw
-                    parseQXML = etree.fromstring(lparse(str(questionRaw)))
+                    parseQXML = etree.fromstring(parse(str(questionRaw)))
 #                lparseQXML =  etree.fromstring(lparse(questionRaw))
                     qTokens = parseQXML.findall(".//token")
 #                lqTokens = lparseQXML.findall(".//token")
-                    parseAXML = etree.fromstring(lparse(str(answerRaw)))
+                    parseAXML = etree.fromstring(parse(str(answerRaw)))
 #                lparseAXML = etree.fromstring(lparse(answerRaw))
                     aTokens = parseAXML.findall(".//token")
 #                laTokens = lparseAXML.findall(".//token")
@@ -224,7 +224,7 @@ if __name__ == '__main__':
 #                        qWord = token.find(".//word").text
 #                        print "["+qWord+"]"schaumburg
 #                    lemma = token.find(".//lemma").text
-                        word = token.find(".//lemma").text
+                        word = token.find(".//word").text
                         qWordList.append(word)
                         if word not in revWordDict.keys():
                             wordKey += 1
@@ -255,7 +255,7 @@ if __name__ == '__main__':
 #                qLemmaSent = " ".join(qLemmaList)
 
                     for t, token in enumerate(aTokens):
-                        word = token.find(".//lemma").text
+                        word = token.find(".//word").text
                         aWordList.append(word)
                         if word not in revWordDict.keys():
                             wordKey += 1
