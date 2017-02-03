@@ -21,6 +21,7 @@ dataPath = u'./'
 nlp = StanfordCoreNLP('http://localhost:9000')
 vocab = pickle.load(open("word","rb"))
 revVocab = pickle.load(open("revWord","rb"))
+debugShare = codecs.open("debugShare", "w", "utf-8")
 
 def convert(revVocab, words):
 
@@ -69,17 +70,21 @@ if __name__ == '__main__':
             outLine = {}
             qWordList = revert(vocab, inLine["question"])
             if qWordList[0] in qTerms:
-                print "qWordListB4\n"
-                print qWordList
-                print "\n"
+                debugShare.write("b4\n")
+                debugShare.write(" ".join(revert(vocab,qWordList)))
+                #        debugRegen.write(stripAccent())
+                debugShare.write("\n")
                 qWordList[0]  = "william"
-                print "qWordListafter\n"
-                print qWordList
-                print "\n"
+                debugShare.write("after\n")
+                debugShare.write(qWordList)
+                debugShare.write("\n")
                 outLine["question"] = convert(revVocab, qWordList)
-                print "testConvert\n"
-                print revert(vocab, outLine["question"])
-                print "\n"
+                debugShare.write("testConvert\n")
+                debugShare.write(revert(vocab, outLine["question"]))
+                debugShare.write("\n")
+                debugShare.write("id\n")
+                debugShare.write(str(inLine["question_id"]))
+                debugShare.write("\n")
                 outLine["question_id"] = inLine["question_id"]
                 outLine["good"] = inLine["good"]
                 outLine["bad"] = inLine["bad"]
