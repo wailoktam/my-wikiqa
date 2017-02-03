@@ -90,3 +90,4 @@ if __name__ == '__main__':
                 outLine["bad"] = inLine["bad"]
                 outLists[file].append(outLine)
         pickle.dump(outLists[file], outFiles[file])
+    debugShare.close()

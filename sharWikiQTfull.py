@@ -628,15 +628,15 @@ if __name__ == '__main__':
 #    w2VSrcFile.close()
 
 
-    with open('trainQTCt', 'wb') as train:
+    with open('train', 'wb') as train:
         pickle.dump(trainList, train)
     train.close()
 
-    with open('testQTCt', 'wb') as test:
+    with open('test', 'wb') as test:
         pickle.dump(testList, test)
     test.close()
 
-    with open('devQTCt', 'wb') as dev:
+    with open('dev', 'wb') as dev:
         pickle.dump(validList, dev)
     dev.close()
 
