@@ -69,6 +69,7 @@ if __name__ == '__main__':
         for inLine in inFiles[file]:
             outLine = {}
             qWordList = revert(vocab, inLine["question"])
+            print qWordList
             if qWordList[0] in qTerms:
                 debugShare.write("b4\n")
                 debugShare.write(" ".join(qWordList))
