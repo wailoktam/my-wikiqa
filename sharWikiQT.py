@@ -47,9 +47,9 @@ if __name__ == '__main__':
     trainList = []
     devList = []
     testList = []
-    trainQT = open("trainQT_when", "wb")
-    devQT = open("devQT_when", "wb")
-    testQT = open("testQT_when", "wb")
+    trainQT = open("trainQT_where", "wb")
+    devQT = open("devQT_where", "wb")
+    testQT = open("testQT_where", "wb")
     inFiles = {'train': train, 'dev': dev, 'test': test}
     outLists = {'train':trainList, 'dev': devList, 'test':testList}
     outFiles = {'train':trainQT, 'dev': devQT, 'test':testQT}
@@ -75,7 +75,7 @@ if __name__ == '__main__':
                 debugShare.write(" ".join(qWordList))
                 #        debugRegen.write(stripAccent())java -mx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer
                 debugShare.write("\n")
-                qWordList[0]  = "1975"
+                qWordList[0]  = "jamaica"
                 debugShare.write("after\n")
                 debugShare.write(" ".join(qWordList))
                 debugShare.write("\n")
