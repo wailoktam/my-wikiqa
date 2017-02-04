@@ -61,7 +61,7 @@ if __name__ == '__main__':
     aList = []
     qList = {}
 
-    qTerms = ['where']
+    qTerms = ['who']
     #    qTerms = ['who', 'when', 'where', 'what']
 
     for file in inFiles.keys():
@@ -75,7 +75,7 @@ if __name__ == '__main__':
                 debugShare.write(" ".join(qWordList))
                 #        debugRegen.write(stripAccent())java -mx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer
                 debugShare.write("\n")
-                qWordList[0]  = "jamaica"
+                qWordList[0]  = "david"
                 debugShare.write("after\n")
                 debugShare.write(" ".join(qWordList))
                 debugShare.write("\n")
