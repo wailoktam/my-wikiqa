@@ -75,7 +75,7 @@ if __name__ == '__main__':
                 debugShare.write(" ".join(qWordList))
                 #        debugRegen.write(stripAccent())java -mx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer
                 debugShare.write("\n")
-                qWordList[0]  = "1923"
+                qWordList[0]  = "1975"
                 debugShare.write("after\n")
                 debugShare.write(" ".join(qWordList))
                 debugShare.write("\n")
