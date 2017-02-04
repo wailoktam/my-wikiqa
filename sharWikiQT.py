@@ -47,9 +47,9 @@ if __name__ == '__main__':
     trainList = []
     devList = []
     testList = []
-    trainQT = open("trainQT_who", "wb")
-    devQT = open("devQT_who", "wb")
-    testQT = open("testQT_who", "wb")
+    trainQT = open("trainQT_where", "wb")
+    devQT = open("devQT_where", "wb")
+    testQT = open("testQT_where", "wb")
     inFiles = {'train': train, 'dev': dev, 'test': test}
     outLists = {'train':trainList, 'dev': devList, 'test':testList}
     outFiles = {'train':trainQT, 'dev': devQT, 'test':testQT}
@@ -61,7 +61,7 @@ if __name__ == '__main__':
     aList = []
     qList = {}
 
-    qTerms = ['who']
+    qTerms = ['where']
     #    qTerms = ['who', 'when', 'where', 'what']
 
     for file in inFiles.keys():

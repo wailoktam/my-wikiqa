@@ -153,7 +153,7 @@ if __name__ == '__main__':
 
 
 
-    qTerms = ['when']
+#    qTerms = ['where']
 #    qTerms = ['who', 'when', 'where', 'what']
     q_file = open('qTerms', 'rb')
     qTermDic = pickle.load(q_file)
