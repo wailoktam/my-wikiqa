@@ -61,7 +61,7 @@ if __name__ == '__main__':
     aList = []
     qList = {}
 
-    qTerms = ['when']
+    qTerms = ['where']
     #    qTerms = ['who', 'when', 'where', 'what']
 
     for file in inFiles.keys():
