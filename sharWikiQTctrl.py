@@ -48,9 +48,9 @@ if __name__ == '__main__':
     trainList = []
     devList = []
     testList = []
-    trainQT = open("trainQTCt_when", "wb")
-    devQT = open("devQTCt_when", "wb")
-    testQT = open("testQTCt_when", "wb")
+    trainQT = open("trainQTCt_oth", "wb")
+    devQT = open("devQTCt_oth", "wb")
+    testQT = open("testQTCt_oth", "wb")
     inFiles = {'train': train, 'dev': dev, 'test': test}
     outLists = {'train':trainList, 'dev': devList, 'test':testList}
     outFiles = {'train':trainQT, 'dev': devQT, 'test':testQT}
@@ -62,8 +62,8 @@ if __name__ == '__main__':
     aList = []
     qList = {}
 
-    qTerms = ['when']
-    #    qTerms = ['who', 'when', 'where', 'what']
+#    qTerms = ['when']
+    qTerms = ['who', 'when', 'where']
 
     for file in inFiles.keys():
 
@@ -71,7 +71,7 @@ if __name__ == '__main__':
             outLine = {}
             qWordList = revert(vocab, inLine["question"])
 #            if 1==1:
-            if qWordList[0] in qTerms:
+            if not qWordList[0] in qTerms:
                 debugShare.write("b4\n")
                 debugShare.write(" ".join(qWordList))
                 #        debugRegen.write(stripAccent())java -mx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer
